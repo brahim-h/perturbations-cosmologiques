@@ -459,7 +459,7 @@ for r in n:
     plt.figure(figsize=(8,7))
     plt.imshow((fond_diffus) , cmap = rvb) 
     plt.colorbar()
-    plt.title("Simulation du CMB en P(k) ∝ k^"+str("%.2f" %(n-4)))
+    plt.title("Simulation du CMB en P(k), n = "+str("%.2f" % r))
     plt.xlabel(" x [Mpc] ")
     plt.ylabel(" y [Mpc] ")
 plt.show()
