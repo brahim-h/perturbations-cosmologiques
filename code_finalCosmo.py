@@ -7,9 +7,18 @@ Created on Sun Dec  4 23:13:43 2022
 """
 # PARTIE I : l'UNIVERS HOMOGÈNE 
 
+"""
+Dans cette première partie, nous allons résoudre l'univers homogène, 
+c'est-à-dire le comportement de l'univers dans son ensemble. Pour cela, 
+nous allons résoudre l'équation de Friedmann-Lemaitre. Un des objectifs de 
+cette partie est aussi de montrer que la dynamique de l'Univers 
+dépend de son contenu en matière/énergie. Nous verrons que l'age 
+de l'Univers ainsi que sa dynamique diffère lorsque l'on change
+la cosmologie (Univers Einstein-De-Sitter, etc...). 
+"""
 
-# Dans cette première partie nous allons résoudre l'univers homogène, c'est-à-dire le comportement de l'univers 
-# dans son ensemble en résolvant (entre autres) l'équation de friedmann-lemaitre. 
+
+
 
 import numpy as np 
 import matplotlib.pyplot as plt 
@@ -28,7 +37,7 @@ omega_m0 =  0.3                    # proportion de matière (baryons + matière 
 omega_r0 = 1e-4                    # proportion de rayonnement aujourd'hui
 omega_lambda0 = 0.7                # proportion d'énergie noire aujourd'hui
 Tcmb = 2.726 # Kelvin              # température du CMB (fond diffus cosmologique)
-a1 = 1/119                         # constante apparaissant dans l'expression de la température des baryons
+a1 = 1/119                         # constante apparaissant dans l'expression de la température des baryons   (modèle de Tseliakhovich & Hirata (2010))
 a2 = 1/115                         # constante apparaissant dans l'expression de la température des baryons
 gamma = 5/3                        # indice adiabatique d’un gaz parfait monoatomique
 kbb = 1.380649e-23                 # constante de boltzmann (exprimée en m**2.kg/k*s**2)
@@ -49,13 +58,16 @@ def euler(f,ti,tf,nt,yi):
     return t, y
 
 
-t0 = -2*np.arcsinh(np.sqrt(0.7/0.3))/(3*H0*np.sqrt(0.7))      # solution analytique de l'âge de l'univers pour une cosmologie 70% énergie noire / 30% matière 
-t000 = -2*np.arcsinh(np.sqrt(0.01/0.99))/(3*H0*np.sqrt(0.01)) # solution analytique de l'âge de l'univers pour une cosmologie 1% énergie noire / 99% matière 
+t0 = -2*np.arcsinh(np.sqrt(0.7/0.3))/(3*H0*np.sqrt(0.7))       # solution analytique de l'âge de l'univers pour une cosmologie 70% énergie noire / 30% matière 
+t000 = -2*np.arcsinh(np.sqrt(0.01/0.99))/(3*H0*np.sqrt(0.01))  # solution analytique de l'âge de l'univers pour une cosmologie 1% énergie noire / 99% matière 
 
 plt.figure(figsize=(8,6))
 
 def f(t):
-    return (0.7/0.3)**(-1/3)*(np.sinh(3*H0*(t-t0)*np.sqrt(0.7)/(2)))**(2/3) # solution analytique à l'équation de friedmann pour une cosmologie 70% énergie noire / 30% matière
+    """
+    solution analytique de l'équation de Friedmann pour une cosmologie 70% énergie noire / 30% matière
+    """
+    return (0.7/0.3)**(-1/3)*(np.sinh(3*H0*(t-t0)*np.sqrt(0.7)/(2)))**(2/3)  
 t=np.linspace(-15*3e16,15*3e16,100000)
 plt.grid()
 plt.plot(t*H0,f(t),'-', label = ("a(t) analytique univers avec 70% d'énergie-noire et 30% de matière"), color = 'blue',linewidth = 2)
@@ -67,10 +79,14 @@ plt.ylabel("a")
 
 
 def facteur_échelle(t,a): 
-    return  H0*(0.3*a**(-1)+(0)*a**(-2)+0.7*a**(2))**(1/2)  # résolution numérique de l'équation de friedmann 
+    """
+    résolution numérique (Euler) de l'équation de Friedmann dans le but
+    de la comparer avec la solution analytique correspondante. 
+    """
+    return  H0*(0.3*a**(-1)+(0)*a**(-2)+0.7*a**(2))**(1/2)  
 ti = 0
 tf = 15*3e16
-a0 = 1                                                      # on fixe a0 = 1 "aujourd'hui"
+a0 = 1                                                       # on fixe a0 = 1 "aujourd'hui"
 nt = 10000                                                 
 
 t, a =  euler(facteur_échelle,ti,tf,nt,a0)
@@ -86,7 +102,11 @@ plt.grid()
 
 
 def f(t):
-    return (0.01/0.99)**(-1/3)*(np.sinh(3*H0*(t-t000)*np.sqrt(0.01)/(2)))**(2/3) # solution analytique à l'équation de friedmann pour une cosmologie 1% énergie noire / 99% matière
+    """
+    solution analytique à l'équation de friedmann pour une cosmologie 1% énergie noire / 99% matière
+    (quasi Einsein-De-Sitter)
+    """
+    return (0.01/0.99)**(-1/3)*(np.sinh(3*H0*(t-t000)*np.sqrt(0.01)/(2)))**(2/3) 
 t=np.linspace(-15*3e16,15*3e16,100000)
 plt.grid()
 plt.plot(t*H0,f(t),'-', label = ("a(t) analytique univers avec 1% d'énergie-noire et 99% de matière"), color = 'violet',linewidth = 3)
@@ -97,10 +117,14 @@ plt.xlabel("H0*t")
 plt.ylabel("a")
 
 def facteur_échelle(t,a): 
+     """
+    résolution numérique (Euler) de l'équation de Friedmann dans le but
+    de la comparer avec la solution analytique correspondante. 
+    """
     return  H0*(0.99*a**(-1)+(0)*a**(-2)+0.01*a**(2))**(1/2)  
 ti = 0
 tf = 15*3e16
-a0 = 1  # on fixe a0 = 1 donc H0 = 1 dans notre modèle et t0 représente " aujourdhui "
+a0 = 1  
 nt = 10000
 
 t, a =  euler(facteur_échelle,ti,tf,nt,a0)
@@ -114,17 +138,21 @@ plt.legend()
 #plt.savefig("scaleFactor.pdf",dpi = 700)
 plt.show()
 
-print("La dynamique du facteur d'échelle dépend du contenu de l'univers, elle dépend directement de la proportion des différents fluides cosmologiques (rayonnement, matière, énergie noire), voyons comment évolue la concentrationdes différents fluides afin de mieux comprendre les 2 principaux régimes qui semblent apparaitres dans le graph ci-dessus ")
+"""
 
-# La dynamique du facteur d'échelle dépend du contenu de l'univers, elle dépend directement de la proportion des 
-# différents fluides cosmologiques (rayonnement, matière, énergie noire), voyons comment évolue la concentration
-# des différents fluides afin de mieux comprendre les 2 principaux régimes qui semblent apparaitres dans le graph ci-dessus 
+La dynamique du facteur d'échelle dépend du contenu de l'univers, elle dépend directement de la 
+proportion des différents fluides cosmologiques (rayonnement, matière, énergie noire), voyons 
+comment évolue la concentration des différents fluides afin de mieux comprendre les 2 principaux 
+régimes qui semblent apparaitres (quand le rayonnement domine - Univers jeune et quand 
+l'énergie-noire domaine, Univers d'aujourd'hui).
 
+
+"""
 
 plt.figure(figsize=(6,4))
 
-def rho_m(aa):                   # densité de matière 
-    return 0.3*aa**-1
+def rho_m(aa):                    # densité de matière 
+    return 0.3*aa**(-1)
 aa = np.linspace(1e-5,5,1000)
 plt.plot((aa),(rho_m(aa)),'--',label = r'$\Omega_{m}(a)$', color = "black")
 
@@ -135,7 +163,7 @@ plt.plot((aa),(rho_m(aa)),'--',label = r'$\Omega_{m}(a)$', color = "black")
 
 
 def rho_r(aa):                   # desnité de rayonnemennt
-    return 1e-4*aa**-2
+    return 1e-4*aa**(-2)
 aa = np.linspace(1e-5,5,1000)
 plt.plot((aa),(rho_r(aa)),'--',label = r'$\Omega_{r}(a)$', color = 'violet')
 #plt.xscale('log')
@@ -166,12 +194,16 @@ plt.yscale('log')
 plt.grid()
 plt.show()
 
-print("D'après cette figure, on comprend que la proportion des différents fluides dépend de l'âge de l'Univers. En effet, quand l'Univers était jeune ('a' très petit) c'est le fluide de rayonnement qui dominait, un peu plus tard, c'est le fluide de matière qui dominait et puis encore plus tard, par exemple aujourd'hui (pour a = 1), c'est l'énergie noire qui domine. Ces différentes évolutions dans la proportion des différents fluides vont jouer un rôle prépondérant sur la dynamique globale de l'Univers et va en quelque sorte façonner la manière dont le facteur d'échelle évolue, voyons donc cela...")
+"""
 
+"D'après cette figure, on comprend que la proportion des différents fluides dépend de l'âge de l'Univers. 
+En effet, quand l'Univers était jeune ('a' très petit) c'est le fluide de rayonnement qui dominait, un peu plus tard, 
+c'est le fluide de matière qui s'est mis a dominer, et puis encore plus tard, par exemple aujourd'hui (pour a = 1),
+c'est l'énergie noire qui domine. Ces différentes évolutions dans la proportion des différents fluides vont jouer un rôle 
+prépondérant sur la dynamique globale de l'Univers et va en quelque sorte façonner la manière dont le facteur d'échelle évolue.
 
-# On peut ainsi comprendre l'évolution de la taille de l'univers, on comprend alors que l'univers est dynamique et que cette 
-# dernière dépend fortement de la cosmologie que l'on considère (proportion des différents fluides cosmo)
-# (il y a plus de détail sur la physique mise en jeu dans le rapport)
+"""
+
 
 # FIN PARTIE I 
 
@@ -179,29 +211,34 @@ print("D'après cette figure, on comprend que la proportion des différents flui
 
 # PARTIE II : PERTURBATIONS COSMOLOGIQUES 
 
-# maintenant que nous avons résolu l'univers homogène et que nous avons une description de l'évolution globale de 
-# l'univers, nous pouvons étudier la manière dont évolue le fluide de matière (baryon + matière noire froide) dans un univers 
-# en expansion.. Nous allons donc résoudre les équations hydrodynamiques (légèrement modifiée car univers en expansion)
-# qui régissent la dynamique du champs scalaire de densité pour les baryons et la matière noire froide. 
-# Nous mettrons (notamment) en évidence les BAO (Oscillations Acoustiques des Baryons) caractéristique du couplage entre 
-# la matière et le rayonnement émanant de la compétition entre l'effondrement gravitationel et la pression de radiation
-# des surdensités de matière. 
-# (toute la physique est détaillée dans le rapport)
+"""
 
+maintenant que nous avons résolu l'univers homogène et que nous avons une description de l'évolution globale de 
+l'univers, nous pouvons étudier la manière dont évolue le fluide de matière (baryon + matière noire froide) dans un univers 
+en expansion... Nous allons donc résoudre les équations hydrodynamiques (légèrement modifiée car univers en expansion)
+qui régissent la dynamique du champs scalaire de densité pour les baryons et la matière noire froide (CDM). 
+Nous mettrons (notamment) en évidence les BAO (Oscillations Acoustiques des Baryons) caractéristique du couplage entre 
+la matière et le rayonnement émanant de la compétition entre l'effondrement gravitationel et la pression de radiation
+sur des surdensités de matière. 
 
+(toute la physique est détaillée dans le rapport, vous le trouverez dans le github)
 
-# 1: évolution de la densité de baryon et matière noire froide en fonction du facteur d'échelle. 
+"""
 
-# On va résourdre les équations hydrodynamiques dans l'espace de fourier, le vecteur d'onde 'k' va alors apparaitre
-# homogène à l'inverse d'une distance. Pour le moment, nous garderons tout en mètre^-1 
+# 1: Évolution de la densité des baryons et matière noire froide en fonction du facteur d'échelle. 
+"""
+On va résourdre les équations hydrodynamiques dans l'espace de fourier (afin de simplifier les opérateurs spatiaux) 
+le vecteur d'onde 'k' va alors apparaitre comme paramètre, homogène à l'inverse d'une distance. 
+Pour le moment, nous garderons tout en m^-1.
 
+"""
 k = 1e-19     #m^-1 
 
 plt.figure(figsize=(8,6))
 
 def F(X,a,k):                                               
     h_t = H0*((omega_m0)*a**(-3)+(omega_r0)*a**(-4)+(omega_lambda0))**(1/2)    # paramètre de Hubble H(a(t))
-    Temp_t = (Tcmb/a)*(1+(a/a1)/(1+(a2/a)**(3/2)))**(-1)                       # description de la température des baryons     
+    Temp_t = (Tcmb/a)*(1+(a/a1)/(1+(a2/a)**(3/2)))**(-1)                       # description de la température des baryons (modèle de Tseliakhovich & Hirata (2010))    
     Vs_t = np.sqrt(gamma*kbb*Temp_t/(u*Mh))                                    # description de la vitesse des baryons (comme un gaz parfait)
     delta_c, theta_c, delta_b, theta_b = X
     delta_c_dot = - theta_c / (h_t*a)
@@ -212,10 +249,10 @@ def F(X,a,k):
     return res
     
 a = np.linspace(1e-6,1,1000000)                              
-delta_c0 = 1                                               # condition initiale sur le champ de desnité en matière noire (DM)
-theta_c0 = 0                                               # condition initiale sur la divergence du champ de vitesse pour la DM 
-delta_b0 = 1                                               # condition initiale sur le champ de desnité en baryons                                              
-theta_b0 = 0                                               # condition initiale sur la divergence du champ de vitesse pout les baryons 
+delta_c0 = 1                                                                  # condition initiale sur le champ de desnité en matière noire (DM)
+theta_c0 = 0                                                                  # condition initiale sur la divergence du champ de vitesse pour la DM 
+delta_b0 = 1                                                                  # condition initiale sur le champ de desnité en baryons                                              
+theta_b0 = 0                                                                  # condition initiale sur la divergence du champ de vitesse pout les baryons 
 X0=np.array([delta_c0,theta_c0,delta_b0,theta_b0])
 
  
@@ -224,28 +261,40 @@ delta_c_dot, theta_c_dot, delta_b_dot, theta_b_dot  =solu0.T
        
 plt.xlabel(" facteur d'échelle ")
 plt.ylabel(" $\delta_b(k)$ ")
-plt.plot(a,solu0[:,2], label=r'$\delta_b(a)$ baryons, k = 1e$^{-19}$ m$^{-1}$', color='black') # On plot seulement l'évolution du champ de densité des baryons et DM, la divergence du champ de vitesse ne nous intérèsse pas
+
+"""
+Dans la suite, c'est surtout l'évolution du champ de densité des Baryons
+et de la CDM qui va nous intérésser. La divergence du champ de vitesse 
+de ces 2 fluides ne sera que peu utile. Nous ne les afficherons pas. 
+
+"""
+plt.plot(a,solu0[:,2], label=r'$\delta_b(a)$ baryons, k = 1e$^{-19}$ m$^{-1}$', color='black') 
                                                                                                 
 plt.title("évolution du champ de densité des baryons" )
 plt.xlabel(" facteur d'échelle")
 plt.ylabel("$\delta_b(a)$")
-plt.xscale('log')                                          # il est judicieux de tout mettre en échelle Log-Log afin de bien voir les ocsillations (BAO)
+plt.xscale('log')                                          
 plt.yscale('log')
 #plt.savefig("champ_de_densité.pdf",dpi = 300)
 plt.legend()
 plt.grid()
 plt.show()
 
-# on observe alors les BAO dans le champ de densité des baryons, il y a plusieurs choses à décrire sur ce graphique
-# nous verrons ceci en détail dans le rapport 
+"""
+On observe alors les BAO si caractéristique du champ de densité des baryons, signe de la compétition entre 
+la pression de radiation qui tend a dissoudre la sphère de matière, et l'auto-gravité de cette dernière qui
+tend à l'a faire s'effondrer... 
+il y a plusieurs choses à décrire sur ce graphique, il ya davantages de détails dans le rapport. 
 
-# on peut aussi tracer l'évolution du champ de densité de la DM pour bien comprendre que la DM ne se couple pas
-# avec le rayonnement. 
+En revanche, pas d'oscillations pour la CDM, logique, la matière noire froide ne se couple pas avec les
+photons...
+
+"""
 
 plt.figure(figsize=(8,6))
 plt.plot(a,solu0[:,2], label=r'$\delta_b(a)$ baryons, k = 1e$^{-19}$ m$^{-1}$', color='black') 
 plt.plot(a,solu0[:,0],label=r'$\delta_c(a)$ matière-noire froide, k = 1e$^{-19}$ m$^{-1}$', color='red')  
-plt.xscale('log')               # il est judicieux de tout mettre en échelle Log-Log afin de bien voir les ocsillations (BAO)
+plt.xscale('log')               
 plt.yscale('log')
 plt.title("évolution du champ de densité des baryons et de la DM" )
 plt.xlabel(" facteur d'échelle ")
@@ -257,16 +306,16 @@ plt.text(0.007,3e3,'pas de couplage de la CDM avec les photons',horizontalalignm
 plt.grid()
 plt.show()
 
-print("Nous venons donc de mettre en évidence le phénomène de BAO qui permet de comprendre énormément de choses (Puit gravitationel de la CDM, compétitions entre gravité et pression de radiation, corrélation entre BAO et distribution des galaxies)... Il y a beaucoup de choses a dire sur ces graphiques, referez vous au rapport pour davantage de détails.")
-# Il y a pleins de choses à dire sur ces différents graphiques, tout sera détaillé dans le rapport
+"""
+Un des objectifs du projet est de simuler le fond diffus cosmologique, pour cela, nous aurons besoin de calculer 
+le spectre de puissance qui est une fonction qui dépend de k et du champ de densité des baryons.
+C'est en fait un outil statistique qui nous permet de décrire les fluctuations aléatoires du champ de 
+densité de la matière (baryonique).
+En conséquence,  nous allons re calculer l'évolution du champ de densité des baryons
+non pas en fonction du facteur d'échelle mais directement en fonction de k. Pour cela, une simple
+boucle sur plusieurs valeurs du paramètre "k" suffit : 
 
-
-
-# Un des objectifs du projet est de simuler le fond diffus cosmologique, pour cela, nous aurons besoin de calculer 
-# le spectre de puissance qui est une fonction qui dépend de k et du champ de densité des baryons. 
-# En conséquence nous allons re calculer l'évolution du champ de densité des baryons
-# non pas en fonction du facteur d'échelle mais directement en fonction de k. 
-
+"""
 
 plt.figure(figsize=(8,6))
 def F(X,a,k):
@@ -288,7 +337,7 @@ delta_b0 = 1
 theta_b0 = 0
 X0=np.array([delta_c0,theta_c0,delta_b0,theta_b0])
 
-kk = np.geomspace(1e-4,1,1000)                                                 # vecteur d'onde [Mpc-1]    
+kk = np.geomspace(1e-4,1,1000)         # vecteur d'onde [Mpc^-1]    
 
 SOL = []                                                                         
 for i in kk :  
@@ -307,16 +356,18 @@ plt.xscale('log')
 plt.legend()
 plt.grid()
 plt.show()
-print("Le spectre de puissance étant défini dans l'espace de Fourier, il est nécéssaire de faire passer la surdensité des Baryons dans cet espace également")
 
-# maintenant que nous avons calculer l'évolution du champ de densité en fonction de k, nous allons calculer le 
-# spectre de puissance qui sera l'outil de base pour simuler le fond diffus cosmologique. 
-# Le spectre de puissance suit une loi d'échelle de la forme : P(k) = k^(n-4)*delta^2(k)
+"""
+Maintenant que nous avons calculer l'évolution du champ de densité en fonction de k, nous allons calculer le 
+spectre de puissance qui sera l'outil de base pour simuler le fond diffus cosmologique. 
+Le spectre de puissance suit une loi d'échelle de la forme : P(k) = k^(n-4)*delta^2(k)
+où 'n' est "l'indice spectrale" qui sert à caractériser la simulation (nous verrons cela après).
 
+"""
 plt.figure(figsize=(6,4))
 def P(k):
     n = 1.2
-    return kk**(n-4)*(SOL[:,1])**2                   # nous pouvons choisir n'importe qu'elle valeur de 'n' dans l'intervalle [0,4]
+    return kk**(n-4)*(SOL[:,1])**2                  
 
 def J(k):
     n = 3.5
@@ -326,7 +377,7 @@ def q(k):
     return kk**(n-4)*(SOL[:,1])**2
 def o(k):
     n = 2.9
-    return kk**(n-4)*(SOL[:,1])**2                   # par la suite, nous verrons l'importance de ce paramètre 'n'
+    return kk**(n-4)*(SOL[:,1])**2                   
 plt.plot(kk,P(k),label = "n = 1.2",color = 'orange')
 plt.plot(kk,q(k),label = "n = 2",color = 'magenta')
 plt.plot(kk,o(k),label = "n = 2.9",color = 'green')
@@ -335,42 +386,13 @@ plt.legend()
 plt.xscale('log')
 plt.yscale('log')                         
 plt.grid()
-plt.title("Spectre de puissance de la matière")
+plt.title("Spectre de puissance de la matière pour différentes valeurs de 'n'")
 plt.xlabel(" k [$Mpc^{-1}$] ")
 plt.ylabel(" $P(k)$ ")
 #plt.savefig("SpectreDe.pdf",dpi = 1000)
 plt.show()
-print("Le spectre de puissance est un outil très très puissant qui va permettre de comprendre en détail les simulations du CMB qui arrivent juste en dessous. Pour plus de détail sur le lien Spectre de puissance - CMB, voir le rapport à partir de la page 15")
-
-# Nous pouvons désormais simuler le fond diffus cosmologique à partir d'un 'bruit blanc' gaussien 
 
 
-plt.figure(figsize=(8,7))
-N = 500                                              # taille de la simulation 
-def bruit_blanc(N):
-    
-    return np.random.normal(0,1,(N,N))               # tirage gaussien sur chaque pixel 2d 
-plt.imshow(bruit_blanc(N)) 
-plt.colorbar()
-plt.title("Bruit Blanc")
-#plt.savefig("B.pdf",dpi = 300)
-plt.show()
-
-
-s = np.fft.rfft2(bruit_blanc(N))                     # transformer de fourier du bruit blanc
-
-kx = np.fft.fftfreq(500,500/500)                     # système de coordonnée permettant de repérer la position de chaque pixel 
-ky = np.fft.rfftfreq(500,500/500)                    # c'est aussi ici que l'on détermine la taille des structures que nous allons observer en déterminant la distance entre 2 pixels de la simulation 
-
-delta = interpolate.interp1d(kk,SOL[:,1],'linear')   # interpolation du champ de densité afin de connaitre sa valeur pour tout k
-
-n = 2.5                                              # valeur de 'n' dans [0,4]
-z = np.zeros((500,250))
-for i in range(1,500):
-    for j in range(1,250):
-        z[i,j] = ((s[i,j])*np.sqrt(((kx[i])**2+(ky[j])**2)**(n-4)))*delta(np.sqrt((kx[i])**2+(ky[j])**2)) # on multiplie chaque élément de 's' par la racine carrée du spectre de puissance 
-
-l = z 
 def make_colormap(seq):
     """Return a LinearSegmentedColormap
     seq: a sequence of floats and RGB-tuples. The floats should be increasing
@@ -390,20 +412,63 @@ def make_colormap(seq):
 
 c = mcolors.ColorConverter().to_rgb
 rvb = make_colormap(
-    [c('blue'), c('cyan'),0.44, c('white'), c('orange'),0.7,c('orange'),c('indianred'),c('orangered'),c('red')])
+    [c('blue'), c('cyan'),0.44, c('white'), c('magenta'),0.7,c('magenta'),c('indianred'),c('orangered'),c('darkred')])
 
 
 
-fond_diffus = np.fft.irfft2(l)                       # puis on repasse dans l'espace réel  
+
 plt.figure(figsize=(8,7))
-plt.imshow((fond_diffus) , cmap = rvb) 
+N = 500                                              # taille de la simulation 
+def bruit_blanc(N):
+    """
+    On simule d'abord un bruit blanc aléatoire sur lequel nous allons
+    ensuite venir appliquer le spectre de puissance afin de décrire
+    l'évolution des fluctuations.
+    
+    """
+    
+    return np.random.normal(0,1,(N,N))               # tirage gaussien sur chaque pixel 2d 
+plt.imshow(bruit_blanc(N)) 
 plt.colorbar()
-plt.title("Simulation du CMB en P(k) ∝ k^"+str("%.2f" %(n-4)))
-plt.xlabel(" x [Mpc] ")
-plt.ylabel(" y [Mpc] ")
+plt.title("Bruit Blanc")
+#plt.savefig("B.pdf",dpi = 300)
 plt.show()
 
-print("Et voici !!, nous pouvons tenter de comparer ces simulations aux relevés du satellite Planck par exemple. Ceci est fait dans le rapport. Il est également intéréssant d'étudier la dépendance en 'n' qui est le paramètre cosmologique dont dépend principalement les simulations")
+
+s = np.fft.rfft2(bruit_blanc(N))                     # transformer de fourier du bruit blanc
+
+kx = np.fft.fftfreq(500,500/500)                     # système de coordonnée permettant de repérer la position de chaque pixel 
+ky = np.fft.rfftfreq(500,500/500)                    # c'est aussi ici que l'on détermine la taille des structures que nous allons observer en déterminant la distance entre 2 pixels de la simulation 
+
+delta = interpolate.interp1d(kk,SOL[:,1],'linear')   # interpolation du champ de densité afin de connaitre sa valeur pour tout k
+nb = 4                                               # nombre d'image du CMB que l'on veut obtenir, attention ne pas mettre trop d'images ! 
+n = np.linspace(4,0,nb)                              # valeur de 'n' dans [0,4]
+for r in range n:
+    z = np.zeros((500,250))
+    for i in range(1,500):
+        for j in range(1,250):
+            """
+            On multiplie chaque élément de 's' par la racine carrée du spectre de puissance 
+            """
+            z[i,j] = ((s[i,j])*np.sqrt(((kx[i])**2+(ky[j])**2)**(r-4)))*delta(np.sqrt((kx[i])**2+(ky[j])**2))   
+
+    l = z 
+
+
+    fond_diffus = np.fft.irfft2(l)                   # puis on repasse dans l'espace réel  
+    plt.figure(figsize=(8,7))
+    plt.imshow((fond_diffus) , cmap = rvb) 
+    plt.colorbar()
+    plt.title("Simulation du CMB en P(k) ∝ k^"+str("%.2f" %(n-4)))
+    plt.xlabel(" x [Mpc] ")
+    plt.ylabel(" y [Mpc] ")
+plt.show()
+
+
+"""
+Et voici !!
+"""
+
 
 
 
