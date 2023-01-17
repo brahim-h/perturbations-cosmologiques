@@ -117,7 +117,7 @@ plt.xlabel("H0*t")
 plt.ylabel("a")
 
 def facteur_échelle(t,a): 
-     """
+    """
     résolution numérique (Euler) de l'équation de Friedmann dans le but
     de la comparer avec la solution analytique correspondante. 
     """
@@ -443,7 +443,7 @@ ky = np.fft.rfftfreq(500,500/500)                    # c'est aussi ici que l'on 
 delta = interpolate.interp1d(kk,SOL[:,1],'linear')   # interpolation du champ de densité afin de connaitre sa valeur pour tout k
 nb = 4                                               # nombre d'image du CMB que l'on veut obtenir, attention ne pas mettre trop d'images ! 
 n = np.linspace(4,0,nb)                              # valeur de 'n' dans [0,4]
-for r in range n:
+for r in n:
     z = np.zeros((500,250))
     for i in range(1,500):
         for j in range(1,250):
