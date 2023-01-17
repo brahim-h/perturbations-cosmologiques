@@ -444,7 +444,7 @@ delta = interpolate.interp1d(kk,SOL[:,1],'linear')   # interpolation du champ de
 nb = 4                                               # nombre d'image du CMB que l'on veut obtenir, attention ne pas mettre trop d'images ! 
 n = np.linspace(4,0,nb)                              # valeur de 'n' dans [0,4]
 for r in n:
-    z = np.zeros((500,250))
+    z = np.zeros((500,250), dtype = np.complex128)
     for i in range(1,500):
         for j in range(1,250):
             """
