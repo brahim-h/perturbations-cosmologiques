@@ -13,3 +13,5 @@ Enfin, on pourrait étudier ce qui se passe après le CMB : La formation des gra
 exemple. 
 
 N'hésitez pas à me proposer d'autres pistes d'améliorations ! 
+
+Mail : brahim.hassani@etu.u-paris.fr 
