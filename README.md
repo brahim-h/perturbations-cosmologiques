@@ -9,9 +9,8 @@ de la gravité pour former les grandes structures de l’Univers que l’on obse
 
 À noter que mon projet peut être complexifié de plusieurs manières, par exemple en faisant des simulations plus précise du CMB afin de mieux contraindre 
 la valeur du paramètre 'n'. Aussi, on pourrait faire une simulation des modes de polarisation du CMB (modes E, B). 
-Enfin, on pourrait étudier ce qui se passe après le CMB : La formation des grandes structures, à travers la théorie de Press-Schechter par 
-exemple. 
+Enfin, on pourrait étudier ce qui se passe après le CMB : La formation des grandes structures, à travers la théorie de Press-Schechter par exemple ou d'autres théories alternatives.
 
-N'hésitez pas à me contacter pour me proposer éventuellment des pistes d'améliorations ou d'autres idées d'approfondissements ! Merci  
+N'hésitez pas à me contacter pour me proposer éventuellment des pistes d'améliorations ou d'autres idées d'approfondissements ! 
 
 Mail : brahim.hassani@etu.u-paris.fr 
