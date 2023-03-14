@@ -12,6 +12,6 @@ la valeur du paramètre 'n'. Aussi, on pourrait faire une simulation des modes d
 Enfin, on pourrait étudier ce qui se passe après le CMB : La formation des grandes structures, à travers la théorie de Press-Schechter par 
 exemple. 
 
-N'hésitez pas à me proposer d'autres pistes d'améliorations ! 
+N'hésitez pas à me contacter pour me proposer éventuellment des pistes d'améliorations ou d'autres idées d'approfondissements ! Merci  
 
 Mail : brahim.hassani@etu.u-paris.fr 
