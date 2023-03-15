@@ -465,9 +465,7 @@ for r in n:
 plt.show()
 
 
-"""
-Et voici !!
-"""
+
 
 
 
